@@ -149,6 +149,8 @@ flowchart LR
   - "ahead at +6.3%": AA Plus 14, 560 g → +33 g, +6.3%, Ahead
   - "exactly -10.0% is slightly behind, not behind": Cobb 10, 297 g → −33 g, −10.0%, Slightly behind
   - "has no standard for age 45": Ross 45 → error "no standard weight for this age"
+  - Added during review: "rounds an exact half away from zero": Ross 9, 270 g → −18 g, −6.25% shows −6.3
+  - Added during review: "shows 0 percent, not minus zero, for a tiny gap below standard": Ross 44, 3196 g → −1 g, 0%, On track
 
 ### Phase 3: Login
 - **In plain words:** Add a login page, a logout button and a command to create your sister's account. Nothing else is reachable without logging in.
@@ -310,7 +312,7 @@ flowchart LR
 
 ## Progress
 - [x] Phase 1: Project setup (database connection still to be checked once `DB_PASSWORD` is in `.env`)
-- [ ] Phase 2: Gap and status maths
+- [x] Phase 2: Gap and status maths
 - [ ] Phase 3: Login
 - [ ] Phase 4: Save, list, edit, delete weighings
 - [ ] Phase 5: Phone pages
