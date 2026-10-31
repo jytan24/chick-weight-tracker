@@ -1074,6 +1074,10 @@ body {
 .row__std {
   color: var(--muted);
 }
+.row__batch {
+  color: var(--ink-2);
+  font-size: 16px;
+}
 .row__note {
   color: var(--ink-2);
 }
@@ -1367,6 +1371,9 @@ body {
 }
 .std .num {
   font-size: 30px;
+}
+.std p + p {
+  margin-top: 6px;
 }
 .form .field__input {
   height: 56px;

@@ -1,16 +1,27 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { kg } from '~/utils/format'
+import { averageGrams, kg } from '~/utils/format'
 
 const props = defineProps<{
   breeds: { value: string; label: string }[]
   standards: Record<string, number[]>
-  values: { breed: string; ageDays: string; weightKg: string; weighedOn: string; note: string }
-  errors: Partial<Record<'breed' | 'ageDays' | 'weightKg' | 'weighedOn' | 'note', string>>
+  values: {
+    breed: string
+    ageDays: string
+    chickCount: string
+    weightKg: string
+    weighedOn: string
+    note: string
+  }
+  errors: Partial<
+    Record<'breed' | 'ageDays' | 'chickCount' | 'weightKg' | 'weighedOn' | 'note', string>
+  >
 }>()
 
 const breed = ref(props.values.breed)
 const ageDays = ref(props.values.ageDays)
+const chickCount = ref(props.values.chickCount)
+const weightKg = ref(props.values.weightKg)
 
 const breedLabel = computed(() => props.breeds.find((b) => b.value === breed.value)?.label ?? '')
 
@@ -20,6 +31,20 @@ const standardGrams = computed(() => {
   const age = Number(ageDays.value)
   if (!Number.isInteger(age)) return null
   return props.standards[breed.value]?.[age] ?? null
+})
+
+// More than one chick: the weight typed is the total of the whole batch
+const isBatch = computed(() => {
+  const count = Number(chickCount.value)
+  return Number.isInteger(count) && count > 1
+})
+
+// Show the average per chick while she types, so a mistake (an average typed as the total) stands out
+const averageWeightGrams = computed(() => {
+  const count = Number(chickCount.value)
+  const totalGrams = Math.round(Number(weightKg.value) * 1000)
+  if (!isBatch.value || count > 1000 || !(totalGrams > 0)) return null
+  return averageGrams(totalGrams, count)
 })
 </script>
 
@@ -64,17 +89,39 @@ const standardGrams = computed(() => {
     </div>
 
     <div class="q">
-      <label class="q__label" for="weightKg">Weight</label>
+      <label class="q__label" for="chickCount">Number of chicks (1 to 1000)</label>
+      <div class="unit-field">
+        <input
+          id="chickCount"
+          v-model="chickCount"
+          name="chickCount"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          max="1000"
+          step="1"
+          class="big"
+          :aria-invalid="errors.chickCount ? 'true' : 'false'"
+        />
+        <span class="unit">chicks</span>
+      </div>
+      <p v-if="errors.chickCount" class="q__error" role="alert">{{ errors.chickCount }}</p>
+    </div>
+
+    <div class="q">
+      <label class="q__label" for="weightKg">
+        {{ isBatch ? 'Total weight of all the chicks' : 'Weight' }}
+      </label>
       <div class="unit-field">
         <input
           id="weightKg"
+          v-model="weightKg"
           name="weightKg"
           type="number"
           inputmode="decimal"
           step="0.001"
           min="0"
           class="big"
-          :value="values.weightKg"
           :aria-invalid="errors.weightKg ? 'true' : 'false'"
         />
         <span class="unit">kg</span>
@@ -82,10 +129,19 @@ const standardGrams = computed(() => {
       <p v-if="errors.weightKg" class="q__error" role="alert">{{ errors.weightKg }}</p>
     </div>
 
-    <p v-if="standardGrams !== null" class="std" aria-live="polite">
-      Standard for {{ breedLabel }} on day {{ ageDays }}:
-      <span class="num">{{ kg(standardGrams) }} kg</span>
-    </p>
+    <div
+      v-if="averageWeightGrams !== null || standardGrams !== null"
+      class="std"
+      aria-live="polite"
+    >
+      <p v-if="averageWeightGrams !== null">
+        Average per chick: <span class="num">{{ kg(averageWeightGrams) }} kg</span>
+      </p>
+      <p v-if="standardGrams !== null">
+        Standard for {{ breedLabel }} on day {{ ageDays }}:
+        <span class="num">{{ kg(standardGrams) }} kg</span>
+      </p>
+    </div>
 
     <div class="field">
       <label class="field__label" for="weighedOn">Date weighed</label>

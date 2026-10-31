@@ -70,6 +70,10 @@ const current = (active: boolean) => (active ? { 'aria-current': 'page' } : {})
           <span class="row__std">standard {{ kg(weighing.standardGrams) }} kg</span>
         </div>
 
+        <p v-if="weighing.chickCount > 1" class="row__batch">
+          Average of {{ weighing.chickCount }} chicks · total {{ kg(weighing.totalGrams) }} kg
+        </p>
+
         <GapGauge :gap-percent="weighing.gapPercent" :status="weighing.status" />
 
         <div class="row__foot">

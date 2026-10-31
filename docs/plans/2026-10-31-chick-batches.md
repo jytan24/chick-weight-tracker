@@ -1,6 +1,6 @@
 # Plan: Weigh a batch of chicks and compare the average
 
-**Status:** Confirmed on 2026-10-31
+**Status:** Done on 2026-10-31
 **Type:** feature
 **Branch:** feature/chicken-weight-tracker (current branch; you can make a new `feature/chick-batches` branch in Sourcetree first if you want a separate pull request)
 
@@ -191,14 +191,14 @@ flowchart LR
 - **Out of scope:** each chick's own weight, lightest and heaviest, how even the batch is, and flocks.
 
 ## Acceptance criteria (whole change)
-- [ ] She can enter a number of chicks and a total weight, and the app saves the average
-- [ ] 10 chicks / 7.890 kg on Ross day 20 gives average 789 g, -15.6%, Behind
-- [ ] 104 chicks / 98.700 kg on Ross day 21 gives average 949 g, -6.2%, Slightly behind
-- [ ] Status and days slow/fast use the average
-- [ ] One chick works exactly as before, and old weighings still show correctly
-- [ ] 0, 1.5 or more than 1000 chicks, and an average over 6 kg, are rejected with a clear message
-- [ ] Editing a batch shows the count and total she typed
-- [ ] The form shows the live average while she types
+- [x] She can enter a number of chicks and a total weight, and the app saves the average
+- [x] 10 chicks / 7.890 kg on Ross day 20 gives average 789 g, -15.6%, Behind
+- [x] 104 chicks / 98.700 kg on Ross day 21 gives average 949 g, -6.2%, Slightly behind
+- [x] Status and days slow/fast use the average
+- [x] One chick works exactly as before, and old weighings still show correctly
+- [x] 0, 1.5 or more than 1000 chicks, and an average over 6 kg, are rejected with a clear message
+- [x] Editing a batch shows the count and total she typed
+- [x] The form shows the live average while she types
 - [ ] The list shows "Average of N chicks" and is readable at 360 px phone width
 
 ## Check your understanding
@@ -212,7 +212,7 @@ flowchart LR
 ## Progress
 - [x] Phase 1: Database and average maths
 - [x] Phase 2: Save and edit batches
-- [ ] Phase 3: Form and list pages
+- [x] Phase 3: Form and list pages (live average checked against the plan cases with a script; not seen on a real phone)
 
 ## Docs updated during grilling
 - `GLOSSARY.md`: added **Batch** and **Average Weight**; changed **Actual Weight** and **Weighing**

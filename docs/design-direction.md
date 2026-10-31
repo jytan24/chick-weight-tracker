@@ -17,6 +17,10 @@ Colour is never the only signal. Every status also has an icon and a word.
 
 Each row has one more line under the status: how many days slow or fast the chicken is ("2 days slow", "3.94 days slow", "On schedule"). It is plain ink with a calendar-clock icon, not a status colour, because it measures something different from the percent gap. Numbers show at most 2 decimals and no needless zeros. When the weight is outside the table it says so ("At least 4 days fast (off the table)", "Ahead of the table").
 
+## Batches
+
+A weighing can be a batch: a big "Number of chicks" box (starts at 1) sits above the weight. With more than one chick the weight label becomes "Total weight of all the chicks", and the panel under the inputs shows "Average per chick" above the standard weight, so a mistake such as typing an average as the total is easy to see. In the list, a batch row has one extra line in ink: "Average of 104 chicks · total 98.700 kg". The big number on the row is always the average, because that is what is compared with the standard. The edit form shows the total she typed.
+
 ## Colours
 
 | Name | Light | Dark | Used for |

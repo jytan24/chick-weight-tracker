@@ -15,7 +15,8 @@ const props = defineProps<{
 const values = {
   breed: props.weighing.breed,
   ageDays: String(props.weighing.ageDays),
-  weightKg: String(props.weighing.weightGrams / 1000),
+  chickCount: String(props.weighing.chickCount),
+  weightKg: String(props.weighing.totalGrams / 1000),
   weighedOn: props.weighing.weighedOn,
   note: props.weighing.note ?? '',
 }

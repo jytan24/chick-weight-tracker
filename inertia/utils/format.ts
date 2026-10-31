@@ -60,3 +60,12 @@ export function scheduleText({ direction, days, offTable }: Schedule) {
 
   return `${days} ${unit} ${direction}`
 }
+
+/**
+ * Average Weight of a batch in whole grams, worked out the same way as on the server
+ * (an exact half rounds up). The server does the real calculation; this is only the
+ * live "Average per chick" line on the form.
+ */
+export function averageGrams(totalGrams: number, chickCount: number) {
+  return Math.floor((2 * totalGrams + chickCount) / (2 * chickCount))
+}

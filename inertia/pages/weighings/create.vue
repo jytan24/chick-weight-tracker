@@ -13,6 +13,7 @@ const props = defineProps<{
 const values = {
   breed: props.breeds[0]?.value ?? '',
   ageDays: '',
+  chickCount: '1',
   weightKg: '',
   weighedOn: props.today,
   note: '',
