@@ -162,7 +162,9 @@ flowchart LR
   - "redirects to login when not logged in and opening history"
   - "logs in with correct email and password and lands on history"
   - "shows an error with a wrong password"
-  - "logs out and can no longer open history"
+  - "logs out and no longer counts as logged in" (checks the login is gone from the session; the test tool can't carry cookies between requests)
+  - Added during review: "opens history when logged in", "logs in when the email is typed with different capital letters", "has no public sign-up page", "blocks login after too many attempts, even with the right password" (10 tries per 15 minutes, via `@adonisjs/limiter` with the memory store)
+  - Added: 3 tests for the `create:user` command (creates an account, resets an existing password, refuses mismatched passwords)
 
 ### Phase 4: Save, list, edit, delete weighings
 - **In plain words:** The weighings table plus the server side for adding, listing (newest first, filter by breed), editing and deleting.
@@ -222,6 +224,13 @@ flowchart LR
 - The kit has no `#constants/*` import alias. In Phase 2 we either add one in `package.json` or put the Standard Table in `app/services/`.
 - `npm audit` reports 21 low/moderate issues inside the framework's own dependencies (no high or critical). Re-check at Phase 6.
 - Baseline: typecheck pass, lint pass, `node ace test` = no tests executed (the kit has none).
+
+## Carry-over for Phase 6 (found in Phase 3 review)
+- Tell the server it sits behind Render's proxy (`trustProxy` in `config/app.ts`), otherwise the login limit would count every visitor as one address.
+- Make `DB_PASSWORD` required in production and turn on SSL for Neon.
+- The session cookie is `secure` in production (already set), so the live site must be opened over `https`.
+- Login sessions last 2 hours (`age: '2h'` in `config/session.ts`). Consider longer if the farmer gets logged out too often.
+- Create the real login by running `node ace create:user` on your PC with the Neon database settings (Render's free plan has no shell).
 
 ## Decisions we made
 | Question | We chose | Why |
@@ -313,7 +322,7 @@ flowchart LR
 ## Progress
 - [x] Phase 1: Project setup (database connection still to be checked once `DB_PASSWORD` is in `.env`)
 - [x] Phase 2: Gap and status maths
-- [ ] Phase 3: Login
+- [x] Phase 3: Login
 - [ ] Phase 4: Save, list, edit, delete weighings
 - [ ] Phase 5: Phone pages
 - [ ] Phase 6: Put it online

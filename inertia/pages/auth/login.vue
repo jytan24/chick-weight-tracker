@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import AuthLayout from '~/layouts/auth.vue'
-import { Form, Link } from '@adonisjs/inertia/vue'
+import { Form } from '@adonisjs/inertia/vue'
 </script>
 
 <template>
   <AuthLayout>
-    <h1 class="auth__title">Welcome back</h1>
-    <p class="auth__sub">Sign in to continue building.</p>
+    <h1 class="auth__title">JY Chick</h1>
+    <p class="auth__sub">Sign in to record and check chicken weights.</p>
 
     <Form v-slot="{ processing, errors }" route="session.store">
       <div class="auth__form">
@@ -48,10 +48,5 @@ import { Form, Link } from '@adonisjs/inertia/vue'
         </button>
       </div>
     </Form>
-
-    <p class="auth__foot">
-      New here?
-      <Link route="new_account.create" class="il">Create an account</Link>
-    </p>
   </AuthLayout>
 </template>

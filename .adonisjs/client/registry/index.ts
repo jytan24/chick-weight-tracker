@@ -14,18 +14,6 @@ const routes = {
     tokens: [[0,"/"]],
     types: placeholder as Registry['home']['types'],
   },
-  'new_account.create': {
-    methods: ["GET","HEAD"],
-    pattern: '/signup',
-    tokens: [[0,"signup"]],
-    types: placeholder as Registry['new_account.create']['types'],
-  },
-  'new_account.store': {
-    methods: ["POST"],
-    pattern: '/signup',
-    tokens: [[0,"signup"]],
-    types: placeholder as Registry['new_account.store']['types'],
-  },
   'session.create': {
     methods: ["GET","HEAD"],
     pattern: '/login',
@@ -38,11 +26,11 @@ const routes = {
     tokens: [[0,"login"]],
     types: placeholder as Registry['session.store']['types'],
   },
-  'dashboard': {
+  'weighings.index': {
     methods: ["GET","HEAD"],
-    pattern: '/dashboard',
-    tokens: [[0,"dashboard"]],
-    types: placeholder as Registry['dashboard']['types'],
+    pattern: '/weighings',
+    tokens: [[0,"weighings"]],
+    types: placeholder as Registry['weighings.index']['types'],
   },
   'session.destroy': {
     methods: ["POST"],

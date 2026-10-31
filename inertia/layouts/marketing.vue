@@ -15,11 +15,10 @@ const page = usePage()
       <div class="header__right">
         <ThemeToggle />
         <template v-if="page.props.user">
-          <Link route="dashboard" class="btn btn--primary btn--sm">Dashboard</Link>
+          <Link route="weighings.index" class="btn btn--primary btn--sm">Weighings</Link>
         </template>
         <template v-else>
-          <Link route="session.create" class="btn btn--ghost btn--sm">Sign in</Link>
-          <Link route="new_account.create" class="btn btn--primary btn--sm">Get started</Link>
+          <Link route="session.create" class="btn btn--primary btn--sm">Sign in</Link>
         </template>
       </div>
     </div>
