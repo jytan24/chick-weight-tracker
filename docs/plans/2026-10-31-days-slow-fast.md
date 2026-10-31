@@ -1,6 +1,6 @@
 # Plan: Days slow / days fast on every weighing
 
-**Status:** Confirmed on 2026-10-31
+**Status:** Done on 2026-10-31
 **Type:** feature
 **Branch:** feature/chicken-weight-tracker (current branch; you can make a new `feature/days-slow-fast` branch in Sourcetree first if you want a separate pull request)
 
@@ -154,12 +154,12 @@ flowchart LR
 - **Risk:** at older ages the table rises about 100 g per day, so a scale error of 50 g moves the answer by about 0.5 day. That is normal, but good to know.
 
 ## Acceptance criteria (whole change)
-- [ ] Ross, day 20, 0.789 kg shows "2 days slow" (your example)
-- [ ] A weight equal to the standard shows "On schedule"
-- [ ] Faster-than-standard chickens show "N days fast", with up to two decimals
-- [ ] Weights outside the table show "at least N days" and "off the table"
-- [ ] Every row in the list, including old weighings, has the new line
-- [ ] Status colours and percent are unchanged
+- [x] Ross, day 20, 0.789 kg shows "2 days slow" (your example)
+- [x] A weight equal to the standard shows "On schedule"
+- [x] Faster-than-standard chickens show "N days fast", with up to two decimals
+- [x] Weights outside the table show "at least N days" and "off the table"
+- [x] Every row in the list, including old weighings, has the new line
+- [x] Status colours and percent are unchanged
 - [ ] The line is readable at 360 px phone width
 
 ## Check your understanding
@@ -172,7 +172,7 @@ flowchart LR
 
 ## Progress
 - [x] Phase 1: Days slow/fast maths
-- [ ] Phase 2: Show it on each weighing
+- [x] Phase 2: Show it on each weighing (wording checked against the plan table with a script; not seen on a real phone)
 
 ## Docs updated during grilling
 - `GLOSSARY.md`: added **Growth Age** and **Days Slow / Days Fast**

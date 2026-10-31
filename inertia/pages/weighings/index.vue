@@ -2,11 +2,11 @@
 import type { Data } from '@generated/data'
 import { Head } from '@inertiajs/vue3'
 import { Link } from '@adonisjs/inertia/vue'
-import { Pencil, Plus, Scale } from 'lucide-vue-next'
+import { CalendarClock, Pencil, Plus, Scale } from 'lucide-vue-next'
 import GapGauge from '~/components/gap_gauge.vue'
 import StatusBadge from '~/components/status_badge.vue'
 import AppLayout from '~/layouts/app.vue'
-import { kg, shortDate, signedPercent } from '~/utils/format'
+import { kg, scheduleText, shortDate, signedPercent } from '~/utils/format'
 
 defineProps<{
   weighings: Data.Weighing[]
@@ -88,6 +88,11 @@ const current = (active: boolean) => (active ? { 'aria-current': 'page' } : {})
             <Pencil :size="16" aria-hidden="true" /> Edit
           </Link>
         </div>
+
+        <p class="row__schedule">
+          <CalendarClock :size="20" aria-hidden="true" />
+          {{ scheduleText(weighing.schedule) }}
+        </p>
 
         <p v-if="weighing.note" class="row__note">{{ weighing.note }}</p>
       </li>

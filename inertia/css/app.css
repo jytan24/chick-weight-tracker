@@ -1077,6 +1077,17 @@ body {
 .row__note {
   color: var(--ink-2);
 }
+.row__schedule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 18px;
+}
+.row__schedule > svg {
+  flex: none;
+  color: var(--muted);
+}
 .row__foot {
   display: flex;
   align-items: center;

@@ -13,6 +13,10 @@ Every weighing shows a ruler from −15% to +10% of the standard weight.
 
 Colour is never the only signal. Every status also has an icon and a word.
 
+## Days slow or fast
+
+Each row has one more line under the status: how many days slow or fast the chicken is ("2 days slow", "3.94 days slow", "On schedule"). It is plain ink with a calendar-clock icon, not a status colour, because it measures something different from the percent gap. Numbers show at most 2 decimals and no needless zeros. When the weight is outside the table it says so ("At least 4 days fast (off the table)", "Ahead of the table").
+
 ## Colours
 
 | Name | Light | Dark | Used for |

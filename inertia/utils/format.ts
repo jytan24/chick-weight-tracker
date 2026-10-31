@@ -1,6 +1,7 @@
 import type { Data } from '@generated/data'
 
 export type Status = Data.Weighing['status']
+export type Schedule = Data.Weighing['schedule']
 
 export const STATUS_LABELS: Record<Status, string> = {
   ahead: 'Ahead',
@@ -41,4 +42,21 @@ export function shortDate(isoDate: string) {
     month: 'short',
     year: sameYear ? undefined : 'numeric',
   })
+}
+
+/**
+ * Says how many days slow or fast a weighing is, in words.
+ * 2 decimals at most, and no needless zeros: 2, 3.94, 0.01.
+ */
+export function scheduleText({ direction, days, offTable }: Schedule) {
+  if (direction === 'on_schedule') return 'On schedule'
+
+  const unit = days === 1 ? 'day' : 'days'
+
+  if (offTable) {
+    if (days === 0) return direction === 'fast' ? 'Ahead of the table' : 'Behind the table'
+    return `At least ${days} ${unit} ${direction} (off the table)`
+  }
+
+  return `${days} ${unit} ${direction}`
 }
