@@ -1,0 +1,48 @@
+# Render blueprint: tells Render how to build and run JY Chick.
+# The database lives on Neon, so there is no database service here.
+services:
+  - type: web
+    name: jy-chick
+    runtime: node
+    plan: free
+    # Singapore is the closest Render region to Malaysia
+    region: singapore
+    # Install everything (the build needs dev tools), build, then install only what the live app needs
+    buildCommand: npm ci --include=dev && node ace build && cd build && npm ci --omit=dev
+    # Free plans cannot run a separate pre-deploy step, so the migrations run just before the server starts
+    startCommand: cd build && node ace.js migration:run --force && node bin/server.js
+    healthCheckPath: /login
+    autoDeploy: false
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NODE_ENV
+        value: production
+      - key: TZ
+        value: Asia/Kuala_Lumpur
+      - key: HOST
+        value: 0.0.0.0
+      - key: LOG_LEVEL
+        value: info
+      - key: SESSION_DRIVER
+        value: cookie
+      - key: LIMITER_STORE
+        value: memory
+      - key: TRUST_PROXY_HOPS
+        value: "1"
+      - key: DB_SSL
+        value: "true"
+      - key: DB_PORT
+        value: "5432"
+      # Render makes a random secret once and keeps it
+      - key: APP_KEY
+        generateValue: true
+      # Copy these from the Neon dashboard when Render asks (see docs/deploy.md)
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_DATABASE
+        sync: false

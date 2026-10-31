@@ -1,4 +1,5 @@
 import app from '@adonisjs/core/services/app'
+import env from '#start/env'
 import { defineConfig } from '@adonisjs/core/http'
 
 /**
@@ -10,6 +11,14 @@ export const http = defineConfig({
    * Useful to correlate logs and debug a request flow.
    */
   generateRequestId: true,
+
+  /**
+   * Behind a host such as Render, every request arrives through a proxy.
+   * Trust only the proxies we know about, so request.ip() is the visitor's
+   * real address (the login limiter counts attempts per address).
+   * Trusting too few proxies is safe; trusting too many lets visitors fake their address.
+   */
+  trustProxy: (_address: string, distance: number) => distance < (env.get('TRUST_PROXY_HOPS') ?? 0),
 
   /**
    * Allow HTTP method spoofing via the "_method" form/query parameter.

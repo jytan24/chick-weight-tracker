@@ -31,6 +31,13 @@ export default await Env.create(new URL('../', import.meta.url), {
   DB_HOST: Env.schema.string({ format: 'host' }),
   DB_PORT: Env.schema.number(),
   DB_USER: Env.schema.string(),
-  DB_PASSWORD: Env.schema.string.optional(),
+  // Required when running for real, so a live site can never start without a database password
+  DB_PASSWORD:
+    process.env.NODE_ENV === 'production' ? Env.schema.string() : Env.schema.string.optional(),
   DB_DATABASE: Env.schema.string(),
+  // Neon (and most hosted databases) only accept encrypted connections
+  DB_SSL: Env.schema.boolean.optional(),
+
+  // How many proxies sit in front of the app (Render uses 1), so we see each visitor's real address
+  TRUST_PROXY_HOPS: Env.schema.number.optional(),
 })

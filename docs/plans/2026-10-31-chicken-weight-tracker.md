@@ -1,6 +1,6 @@
 # Plan: Chicken Weight Tracker
 
-**Status:** Confirmed on 2026-10-31
+**Status:** Built and ready to deploy (waiting for your Neon and Render accounts, see docs/deploy.md)
 **Type:** feature (new project)
 **Branch:** feature/chicken-weight-tracker
 
@@ -302,12 +302,12 @@ flowchart LR
 
 ## Acceptance criteria (whole change)
 - [ ] Sister can log in from her own phone over the internet
-- [ ] Strangers without the password see only the login page
-- [ ] She can add a weighing (breed, age, kg, date, note) and immediately see gap kg, gap % and a coloured Status
-- [ ] All 6 maths example cases give exactly the expected results
-- [ ] Age outside 0–44, weight ≤ 0 or > 6 kg, and an unknown breed are rejected with a clear message
-- [ ] History lists newest first and can be filtered by breed
-- [ ] She can edit and delete a weighing
+- [x] Strangers without the password see only the login page
+- [x] She can add a weighing (breed, age, kg, date, note) and immediately see gap kg, gap % and a coloured Status
+- [x] All 6 maths example cases give exactly the expected results
+- [x] Age outside 0–44, weight ≤ 0 or > 6 kg, and an unknown breed are rejected with a clear message
+- [x] History lists newest first and can be filtered by breed
+- [x] She can edit and delete a weighing
 - [ ] Pages are comfortable to use at 360 px phone width
 
 ## Verification
@@ -329,7 +329,7 @@ flowchart LR
 - [x] Phase 3: Login
 - [x] Phase 4: Save, list, edit, delete weighings
 - [x] Phase 5: Phone pages (components: status_badge, gap_gauge, weighing_fields; layout: app; not yet seen on a real phone, see Verification)
-- [ ] Phase 6: Put it online
+- [x] Phase 6: Put it online (config, render.yaml and docs/deploy.md done and tested in a production-mode build; the live deploy needs your own accounts)
 
 ## Docs to write right after you approve (before any code)
 - `docs/plans/2026-10-31-chicken-weight-tracker.md`: this plan
