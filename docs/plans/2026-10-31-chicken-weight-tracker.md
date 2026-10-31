@@ -1,6 +1,6 @@
 # Plan: Chicken Weight Tracker
 
-**Status:** Draft, waiting for confirm
+**Status:** Confirmed on 2026-10-31
 **Type:** feature (new project)
 **Branch:** feature/chicken-weight-tracker
 
@@ -154,7 +154,7 @@ flowchart LR
 - **In plain words:** Add a login page, a logout button and a command to create your sister's account. Nothing else is reachable without logging in.
 - **What you'll see:** A plain (not yet styled) login page. After logging in you land on an empty "Weighings" page.
 - **How to try it:** `node ace create:user sister@example.com`, enter a password, log in, log out.
-- **Files:** `commands/create_user.ts`, `app/controllers/session_controller.ts`, `app/validators/session.ts`, `start/routes.ts`, `inertia/pages/auth/login.vue` (bare), `inertia/pages/weighings/index.vue` (bare), `tests/functional/auth.spec.ts`
+- **Files:** `commands/create_user.ts`, remove the starter kit's public sign-up (`app/controllers/new_account_controller.ts`, `inertia/pages/auth/signup.vue`, the `signup` routes), `app/controllers/session_controller.ts`, `app/validators/user.ts`, `start/routes.ts`, `inertia/pages/auth/login.vue` (bare), `inertia/pages/weighings/index.vue` (bare), `tests/functional/auth.spec.ts`
 - **Done when:** The tests below pass.
 - **Tests** (seam: HTTP routes):
   - "redirects to login when not logged in and opening history"
@@ -184,7 +184,7 @@ flowchart LR
 - **In plain words:** Make the login, history, add and edit pages look good and easy to use on a phone. First we agree a design direction (colours, fonts) and save it to `docs/design-direction.md`.
 - **What you'll see:** The finished app on your phone's browser.
 - **How to try it:** `npm run dev` with `--host`, then open `http://<your-PC-IP>:3333` on a phone on the same Wi-Fi. Test add, edit, delete, filter, and the empty history state.
-- **Files:** `inertia/pages/**`, `inertia/layouts/default.vue`, `inertia/components/StatusBadge.vue`, `inertia/components/WeighingForm.vue`, `inertia/css/app.css`, `docs/design-direction.md`
+- **Files:** `inertia/pages/**`, `inertia/layouts/app.vue`, `inertia/components/status_badge.vue`, `inertia/components/weighing_form.vue`, `inertia/css/app.css`, `docs/design-direction.md`
 - **Done when:** It works at 360 px phone width, the colour labels are readable, and every form error shows next to its field.
 - **Tests:** Styling only, so no new automated tests. The Phase 4 tests must still pass.
 - **Page sketch:**
@@ -213,6 +213,13 @@ flowchart LR
 - **Files:** `render.yaml` (build/start commands, runs migrations on deploy), `docs/deploy.md` (step-by-step for you), `.env.example`
 - **Done when:** She can log in from her own phone, and you've checked `engineering:deploy-checklist`.
 - **Tests:** Deploy config only. The full test suite passes before deploying.
+
+## Notes found during Phase 1
+- The starter kit is AdonisJS 7 (the generator's kit name is `vue`). Controllers are wired through `#generated/controllers`, models extend a generated schema class from `#database/schema`, and Vue files are named in `snake_case` (e.g. `nav_link.vue`). New code follows these.
+- The kit shipped with SQLite and a **public `/signup` page**. We switched to PostgreSQL. The sign-up page is removed in Phase 3, because the plan says there is no public sign-up.
+- The kit has no `#constants/*` import alias. In Phase 2 we either add one in `package.json` or put the Standard Table in `app/services/`.
+- `npm audit` reports 21 low/moderate issues inside the framework's own dependencies (no high or critical). Re-check at Phase 6.
+- Baseline: typecheck pass, lint pass, `node ace test` = no tests executed (the kit has none).
 
 ## Decisions we made
 | Question | We chose | Why |
@@ -243,7 +250,7 @@ flowchart LR
 
 ## Risks and assumptions
 - **Assumption:** She uses a phone browser, in English, typing weights in kg with up to 3 decimals.
-- **Assumption:** Her timezone is set with the `TZ` setting. **Tell me her timezone** (default `Asia/Kuala_Lumpur` unless you say otherwise).
+- **Decided:** Her timezone is `Asia/Kuala_Lumpur`, set with the `TZ` setting.
 - **Assumption:** The maximum sensible weight is 6 kg. Anything above is rejected as a typo.
 - **Risk: free hosting sleeps.** The first load each day takes 30–60 s. Fix: Render Starter (~US$7/month), a settings change only.
 - **Risk: Neon's free plan limits.** These are far more than one farm will ever use. Neon also keeps short-term backups.
@@ -302,7 +309,7 @@ flowchart LR
    <details><summary>Answer</summary>Probably not. Free Render hosting sleeps when idle and needs about 30–60 s to wake. Upgrading to a paid plan removes this.</details>
 
 ## Progress
-- [ ] Phase 1: Project setup
+- [x] Phase 1: Project setup (database connection still to be checked once `DB_PASSWORD` is in `.env`)
 - [ ] Phase 2: Gap and status maths
 - [ ] Phase 3: Login
 - [ ] Phase 4: Save, list, edit, delete weighings
