@@ -27,3 +27,9 @@ _Avoid_: Entry, record, log, sample
 
 **Status**: A label describing a Weighing's Weight Gap percentage (rounded to 1 decimal): **Ahead** (+5.0% or more), **On track** (−5.0% to under +5.0%), **Slightly behind** (−10.0% to under −5.0%), **Behind** (below −10.0%).
 _Avoid_: Grade, health, condition
+
+**Growth Age**: The Age at which the Standard Table gives exactly the Actual Weight. If a Ross chick weighs 0.789 kg, its Growth Age is 18, whatever its real Age. Weights that fall between two days are placed part-way between them (for example 31.06).
+_Avoid_: Equivalent age, weight age, biological age
+
+**Days Slow / Days Fast**: Age minus Growth Age, shown to up to 2 decimals without needless zeros (2, 1.85). Positive means the chicken is **slow** (lighter than standard, behind the table by that many days). Negative means **fast**. About zero is **On schedule**. When the Actual Weight is outside the whole Standard Table, only a minimum can be known, so it is shown as "at least" and marked **off the table**.
+_Avoid_: Days behind, delay, lag

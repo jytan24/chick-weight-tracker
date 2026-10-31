@@ -49,6 +49,27 @@ test.group('Weighings', (group) => {
     })
   })
 
+  test('shows how many days slow a saved weighing is (Ross day 20 at 0.789 kg)', async ({
+    client,
+    assert,
+  }) => {
+    const user = await createUser()
+    await Weighing.create({
+      breed: 'ross',
+      ageDays: 20,
+      weightGrams: 789,
+      weighedOn: DateTime.fromISO('2026-10-31'),
+    })
+
+    const list = await client.get('/weighings').loginAs(user).withInertia()
+
+    assert.deepEqual(list.inertiaProps.weighings[0].schedule, {
+      direction: 'slow',
+      days: 2,
+      offTable: false,
+    })
+  })
+
   test('converts kilograms to whole grams when saving', async ({ client, assert }) => {
     const user = await createUser()
 
