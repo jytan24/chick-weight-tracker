@@ -10,5 +10,10 @@ export interface ApiDefinition {
   }
   weighings: {
     index: typeof routes['weighings.index']
+    create: typeof routes['weighings.create']
+    store: typeof routes['weighings.store']
+    edit: typeof routes['weighings.edit']
+    update: typeof routes['weighings.update']
+    destroy: typeof routes['weighings.destroy']
   }
 }

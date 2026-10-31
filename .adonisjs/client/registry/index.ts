@@ -32,6 +32,36 @@ const routes = {
     tokens: [[0,"weighings"]],
     types: placeholder as Registry['weighings.index']['types'],
   },
+  'weighings.create': {
+    methods: ["GET","HEAD"],
+    pattern: '/weighings/create',
+    tokens: [[0,"weighings"],[0,"create"]],
+    types: placeholder as Registry['weighings.create']['types'],
+  },
+  'weighings.store': {
+    methods: ["POST"],
+    pattern: '/weighings',
+    tokens: [[0,"weighings"]],
+    types: placeholder as Registry['weighings.store']['types'],
+  },
+  'weighings.edit': {
+    methods: ["GET","HEAD"],
+    pattern: '/weighings/:id/edit',
+    tokens: [[0,"weighings"],[1,"id"],[0,"edit"]],
+    types: placeholder as Registry['weighings.edit']['types'],
+  },
+  'weighings.update': {
+    methods: ["PUT"],
+    pattern: '/weighings/:id',
+    tokens: [[0,"weighings"],[1,"id"]],
+    types: placeholder as Registry['weighings.update']['types'],
+  },
+  'weighings.destroy': {
+    methods: ["DELETE"],
+    pattern: '/weighings/:id',
+    tokens: [[0,"weighings"],[1,"id"]],
+    types: placeholder as Registry['weighings.destroy']['types'],
+  },
   'session.destroy': {
     methods: ["POST"],
     pattern: '/logout',

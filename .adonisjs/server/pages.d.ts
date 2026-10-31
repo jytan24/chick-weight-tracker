@@ -12,6 +12,8 @@ declare module '@adonisjs/inertia/types' {
     'auth/login': ExtractProps<(typeof import('../../inertia/pages/auth/login.vue'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.vue'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.vue'))['default']>
+    'weighings/create': ExtractProps<(typeof import('../../inertia/pages/weighings/create.vue'))['default']>
+    'weighings/edit': ExtractProps<(typeof import('../../inertia/pages/weighings/edit.vue'))['default']>
     'weighings/index': ExtractProps<(typeof import('../../inertia/pages/weighings/index.vue'))['default']>
   }
 }

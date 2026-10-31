@@ -5,4 +5,5 @@
 
 export const controllers = {
   Session: () => import('#controllers/session_controller'),
+  Weighings: () => import('#controllers/weighings_controller'),
 }

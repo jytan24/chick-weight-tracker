@@ -23,7 +23,18 @@ router
 
 router
   .group(() => {
-    router.on('/weighings').renderInertia('weighings/index', {}).as('weighings.index')
+    router.get('weighings', [controllers.Weighings, 'index'])
+    router.get('weighings/create', [controllers.Weighings, 'create'])
+    router.post('weighings', [controllers.Weighings, 'store'])
+    router
+      .get('weighings/:id/edit', [controllers.Weighings, 'edit'])
+      .where('id', router.matchers.number())
+    router
+      .put('weighings/:id', [controllers.Weighings, 'update'])
+      .where('id', router.matchers.number())
+    router
+      .delete('weighings/:id', [controllers.Weighings, 'destroy'])
+      .where('id', router.matchers.number())
     router.post('logout', [controllers.Session, 'destroy'])
   })
   .use(middleware.auth())

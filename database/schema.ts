@@ -23,3 +23,24 @@ export class UserSchema extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }
+
+export class WeighingSchema extends BaseModel {
+  static $columns = ['ageDays', 'breed', 'createdAt', 'id', 'note', 'updatedAt', 'weighedOn', 'weightGrams'] as const
+  $columns = WeighingSchema.$columns
+  @column()
+  declare ageDays: number
+  @column()
+  declare breed: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare note: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column.date()
+  declare weighedOn: DateTime
+  @column()
+  declare weightGrams: number
+}

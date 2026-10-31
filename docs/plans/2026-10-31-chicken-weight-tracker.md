@@ -182,7 +182,9 @@ flowchart LR
   - "filters history by breed"
   - "updates a weighing and the status changes"
   - "deletes a weighing"
-  - "cannot add, edit or delete when not logged in"
+  - "cannot add, edit or delete when not logged in" (also covers the add/edit forms)
+  - Added during build and review: "opens the add form with a date and the three breeds", "opens the edit form with the saved values", "shows 30 weighings per page, newest first" (paging), "asks for empty fields in plain words", "shows not found for a weighing that does not exist", "shows not found when the id in the address is not a number" (this one caught a real crash: a non-numeric id gave a database error)
+  - Note: the weight conversion test also checks 1.005 kg, which a naive multiply turns into 1004.999… g, so it saves 1005 g.
 
 ### Phase 5: Phone pages ✨ [frontend]
 - **In plain words:** Make the login, history, add and edit pages look good and easy to use on a phone. First we agree a design direction (colours, fonts) and save it to `docs/design-direction.md`.
@@ -230,6 +232,8 @@ flowchart LR
 - Make `DB_PASSWORD` required in production and turn on SSL for Neon.
 - The session cookie is `secure` in production (already set), so the live site must be opened over `https`.
 - Login sessions last 2 hours (`age: '2h'` in `config/session.ts`). Consider longer if the farmer gets logged out too often.
+- Set `TZ=Asia/Kuala_Lumpur` on Render too. Otherwise "today" in the add form is the UTC date, which is the previous day between 00:00 and 08:00 in Kuala Lumpur.
+- The add form does not stop a future date (e.g. a typo year). Low risk; add a rule later if it happens.
 - Create the real login by running `node ace create:user` on your PC with the Neon database settings (Render's free plan has no shell).
 
 ## Decisions we made
@@ -323,7 +327,7 @@ flowchart LR
 - [x] Phase 1: Project setup (database connection still to be checked once `DB_PASSWORD` is in `.env`)
 - [x] Phase 2: Gap and status maths
 - [x] Phase 3: Login
-- [ ] Phase 4: Save, list, edit, delete weighings
+- [x] Phase 4: Save, list, edit, delete weighings
 - [ ] Phase 5: Phone pages
 - [ ] Phase 6: Put it online
 
