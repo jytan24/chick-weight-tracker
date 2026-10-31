@@ -40,6 +40,7 @@ test.group('Weighings', (group) => {
       breed: 'ross',
       ageDays: 21,
       weightGrams: 950,
+      totalGrams: 950,
       weighedOn: '2026-10-31',
       note: 'House 2',
       standardGrams: 1012,
@@ -58,6 +59,7 @@ test.group('Weighings', (group) => {
       breed: 'ross',
       ageDays: 20,
       weightGrams: 789,
+      totalGrams: 789,
       weighedOn: DateTime.fromISO('2026-10-31'),
     })
 
@@ -67,6 +69,25 @@ test.group('Weighings', (group) => {
       direction: 'slow',
       days: 2,
       offTable: false,
+    })
+  })
+
+  test('shows an old single-chick weighing as a batch of 1', async ({ client, assert }) => {
+    const user = await createUser()
+    await Weighing.create({
+      breed: 'ross',
+      ageDays: 21,
+      weightGrams: 950,
+      totalGrams: 950,
+      weighedOn: DateTime.fromISO('2026-10-31'),
+    })
+
+    const list = await client.get('/weighings').loginAs(user).withInertia()
+
+    assert.containSubset(list.inertiaProps.weighings[0], {
+      weightGrams: 950,
+      chickCount: 1,
+      totalGrams: 950,
     })
   })
 
@@ -122,6 +143,7 @@ test.group('Weighings', (group) => {
       breed: 'cobb',
       ageDays: 35,
       weightGrams: 2100,
+      totalGrams: 2100,
       weighedOn: DateTime.fromISO('2026-10-20'),
       note: 'House 2',
     })
@@ -135,6 +157,7 @@ test.group('Weighings', (group) => {
       breed: 'cobb',
       ageDays: 35,
       weightGrams: 2100,
+      totalGrams: 2100,
       weighedOn: '2026-10-20',
       note: 'House 2',
     })
@@ -146,6 +169,7 @@ test.group('Weighings', (group) => {
       breed: 'ross',
       ageDays: 21,
       weightGrams: 1012,
+      totalGrams: 1012,
       weighedOn: DateTime.fromISO('2026-10-20'),
     })
 
@@ -163,6 +187,7 @@ test.group('Weighings', (group) => {
     assert.containSubset(list.inertiaProps.weighings[0], {
       id: weighing.id,
       weightGrams: 950,
+      totalGrams: 950,
       note: 'weighed again',
       status: 'slightly_behind',
     })
@@ -174,6 +199,7 @@ test.group('Weighings', (group) => {
       breed: 'ross',
       ageDays: 21,
       weightGrams: 1012,
+      totalGrams: 1012,
       weighedOn: DateTime.fromISO('2026-10-20'),
     })
 
@@ -190,7 +216,7 @@ test.group('Weighings', (group) => {
 
   test('shows 30 weighings per page, newest first', async ({ client, assert }) => {
     const user = await createUser()
-    const base = { breed: 'ross', ageDays: 21, weightGrams: 1000 }
+    const base = { breed: 'ross', ageDays: 21, weightGrams: 1000, totalGrams: 1000 }
     for (let day = 1; day <= 31; day++) {
       await Weighing.create({
         ...base,
@@ -220,6 +246,7 @@ test.group('Weighings', (group) => {
       breed: 'ross',
       ageDays: 21,
       weightGrams: 1012,
+      totalGrams: 1012,
       weighedOn: DateTime.fromISO('2026-10-20'),
     })
 
@@ -341,7 +368,7 @@ test.group('Weighings', (group) => {
 
   test('lists newest weighing first', async ({ client, assert }) => {
     const user = await createUser()
-    const base = { breed: 'ross', ageDays: 21, weightGrams: 1000 }
+    const base = { breed: 'ross', ageDays: 21, weightGrams: 1000, totalGrams: 1000 }
     await Weighing.create({ ...base, weighedOn: DateTime.fromISO('2026-10-01'), note: 'oldest' })
     await Weighing.create({ ...base, weighedOn: DateTime.fromISO('2026-10-20'), note: 'newer' })
     await Weighing.create({ ...base, weighedOn: DateTime.fromISO('2026-10-20'), note: 'newest' })
@@ -354,7 +381,12 @@ test.group('Weighings', (group) => {
 
   test('filters history by breed', async ({ client, assert }) => {
     const user = await createUser()
-    const base = { ageDays: 21, weightGrams: 1000, weighedOn: DateTime.fromISO('2026-10-20') }
+    const base = {
+      ageDays: 21,
+      weightGrams: 1000,
+      totalGrams: 1000,
+      weighedOn: DateTime.fromISO('2026-10-20'),
+    }
     await Weighing.create({ ...base, breed: 'ross' })
     await Weighing.create({ ...base, breed: 'cobb' })
 

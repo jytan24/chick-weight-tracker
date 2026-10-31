@@ -25,18 +25,22 @@ export class UserSchema extends BaseModel {
 }
 
 export class WeighingSchema extends BaseModel {
-  static $columns = ['ageDays', 'breed', 'createdAt', 'id', 'note', 'updatedAt', 'weighedOn', 'weightGrams'] as const
+  static $columns = ['ageDays', 'breed', 'chickCount', 'createdAt', 'id', 'note', 'totalGrams', 'updatedAt', 'weighedOn', 'weightGrams'] as const
   $columns = WeighingSchema.$columns
   @column()
   declare ageDays: number
   @column()
   declare breed: string
+  @column()
+  declare chickCount: number
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column({ isPrimary: true })
   declare id: number
   @column()
   declare note: string | null
+  @column()
+  declare totalGrams: number
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column.date()

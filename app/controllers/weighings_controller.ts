@@ -14,6 +14,8 @@ function toColumns({ weightKg, ...data }: Awaited<ReturnType<typeof weighingVali
     ...data,
     note: data.note ?? null,
     weightGrams: Math.round(weightKg * 1000),
+    chickCount: 1,
+    totalGrams: Math.round(weightKg * 1000),
   }
 }
 

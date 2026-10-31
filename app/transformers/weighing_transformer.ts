@@ -6,13 +6,15 @@ import { BaseTransformer } from '@adonisjs/core/transformers'
 
 export default class WeighingTransformer extends BaseTransformer<Weighing> {
   toObject() {
-    const { id, breed, ageDays, weightGrams, note } = this.resource
+    const { id, breed, ageDays, weightGrams, chickCount, totalGrams, note } = this.resource
 
     return {
       id,
       breed: breed as Breed,
       ageDays,
       weightGrams,
+      chickCount,
+      totalGrams,
       weighedOn: this.resource.weighedOn.toISODate()!,
       note,
       ...evaluateWeighing(breed as Breed, ageDays, weightGrams),
