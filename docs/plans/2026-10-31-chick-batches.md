@@ -211,7 +211,7 @@ flowchart LR
 
 ## Progress
 - [x] Phase 1: Database and average maths
-- [ ] Phase 2: Save and edit batches
+- [x] Phase 2: Save and edit batches
 - [ ] Phase 3: Form and list pages
 
 ## Docs updated during grilling

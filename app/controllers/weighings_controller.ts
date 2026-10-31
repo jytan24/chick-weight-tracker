@@ -1,21 +1,28 @@
 import Weighing from '#models/weighing'
 import { BREEDS, BREED_LABELS, STANDARD_WEIGHTS_GRAMS } from '#constants/standard_weights'
+import { averageWeightGrams } from '#services/batch_average_service'
 import WeighingTransformer from '#transformers/weighing_transformer'
 import { weighingValidator } from '#validators/weighing'
 import type { HttpContext } from '@adonisjs/core/http'
 import { DateTime } from 'luxon'
 
 /**
- * Turn the validated form (weight in kilograms) into the columns that
- * are saved (weight in whole grams).
+ * Turn the validated form (total weight in kilograms) into the columns that are saved:
+ * the number of chicks, the total in whole grams, and the Average Weight per chick.
  */
-function toColumns({ weightKg, ...data }: Awaited<ReturnType<typeof weighingValidator.validate>>) {
+function toColumns({
+  weightKg,
+  chickCount = 1,
+  ...data
+}: Awaited<ReturnType<typeof weighingValidator.validate>>) {
+  const totalGrams = Math.round(weightKg * 1000)
+
   return {
     ...data,
     note: data.note ?? null,
-    weightGrams: Math.round(weightKg * 1000),
-    chickCount: 1,
-    totalGrams: Math.round(weightKg * 1000),
+    chickCount,
+    totalGrams,
+    weightGrams: averageWeightGrams(totalGrams, chickCount),
   }
 }
 

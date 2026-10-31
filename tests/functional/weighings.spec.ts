@@ -366,6 +366,216 @@ test.group('Weighings', (group) => {
     assert.lengthOf(await Weighing.all(), 0)
   })
 
+  test('saves a batch of 10 and compares the average (Ross day 20, 7.890 kg)', async ({
+    client,
+    assert,
+  }) => {
+    const user = await createUser()
+
+    await client
+      .post('/weighings')
+      .loginAs(user)
+      .withCsrfToken()
+      .form({ ...validForm, ageDays: 20, chickCount: 10, weightKg: '7.890' })
+      .redirects(0)
+    const list = await client.get('/weighings').loginAs(user).withInertia()
+
+    assert.containSubset(list.inertiaProps.weighings[0], {
+      weightGrams: 789,
+      chickCount: 10,
+      totalGrams: 7890,
+      gapGrams: -146,
+      gapPercent: -15.6,
+      status: 'behind',
+      schedule: { direction: 'slow', days: 2, offTable: false },
+    })
+  })
+
+  test('saves a batch of 104 and compares the average (Ross day 21, 98.700 kg)', async ({
+    client,
+    assert,
+  }) => {
+    const user = await createUser()
+
+    await client
+      .post('/weighings')
+      .loginAs(user)
+      .withCsrfToken()
+      .form({ ...validForm, chickCount: 104, weightKg: '98.700' })
+      .redirects(0)
+    const list = await client.get('/weighings').loginAs(user).withInertia()
+
+    assert.containSubset(list.inertiaProps.weighings[0], {
+      weightGrams: 949,
+      chickCount: 104,
+      totalGrams: 98700,
+      gapGrams: -63,
+      gapPercent: -6.2,
+      status: 'slightly_behind',
+      schedule: { direction: 'slow', days: 0.82, offTable: false },
+    })
+  })
+
+  test('rounds an exact half of a gram up when saving a batch', async ({ client, assert }) => {
+    const user = await createUser()
+
+    await client
+      .post('/weighings')
+      .loginAs(user)
+      .withCsrfToken()
+      .form({ ...validForm, chickCount: 10, weightKg: '9.495' })
+      .redirects(0)
+
+    const saved = await Weighing.firstOrFail()
+    assert.equal(saved.weightGrams, 950)
+    assert.equal(saved.totalGrams, 9495)
+  })
+
+  test('saves one chick when no number of chicks is sent', async ({ client, assert }) => {
+    const user = await createUser()
+
+    await client.post('/weighings').loginAs(user).withCsrfToken().form(validForm).redirects(0)
+
+    const saved = await Weighing.firstOrFail()
+    assert.equal(saved.chickCount, 1)
+    assert.equal(saved.weightGrams, 950)
+    assert.equal(saved.totalGrams, 950)
+  })
+
+  test('treats a blank number of chicks as one chick', async ({ client, assert }) => {
+    const user = await createUser()
+
+    await client
+      .post('/weighings')
+      .loginAs(user)
+      .withCsrfToken()
+      .form({ ...validForm, chickCount: '' })
+      .redirects(0)
+
+    const saved = await Weighing.firstOrFail()
+    assert.equal(saved.chickCount, 1)
+    assert.equal(saved.weightGrams, 950)
+  })
+
+  test('a blank number of chicks does not skip the 6 kg rule (61 kg)', async ({
+    client,
+    assert,
+  }) => {
+    const user = await createUser()
+
+    const response = await client
+      .post('/weighings')
+      .header('referer', '/weighings/create')
+      .loginAs(user)
+      .withCsrfToken()
+      .form({ ...validForm, chickCount: '', weightKg: '61' })
+      .redirects(0)
+
+    response.assertFlashMessage('inputErrorsBag', {
+      weightKg: ['Average weight must be 6 kg or less'],
+    })
+    assert.lengthOf(await Weighing.all(), 0)
+  })
+
+  test('rejects 0, 1.5 and 1001 chicks', async ({ client, assert }) => {
+    const user = await createUser()
+
+    for (const chickCount of ['0', '1.5', '1001']) {
+      const response = await client
+        .post('/weighings')
+        .header('referer', '/weighings/create')
+        .loginAs(user)
+        .withCsrfToken()
+        .form({ ...validForm, chickCount })
+        .redirects(0)
+
+      response.assertFlashMessage('inputErrorsBag', {
+        chickCount: ['Number of chicks must be a whole number from 1 to 1000'],
+      })
+    }
+    assert.lengthOf(await Weighing.all(), 0)
+  })
+
+  test('rejects an average over 6 kg (10 chicks, 61 kg)', async ({ client, assert }) => {
+    const user = await createUser()
+
+    const response = await client
+      .post('/weighings')
+      .header('referer', '/weighings/create')
+      .loginAs(user)
+      .withCsrfToken()
+      .form({ ...validForm, chickCount: 10, weightKg: '61' })
+      .redirects(0)
+
+    response.assertFlashMessage('inputErrorsBag', {
+      weightKg: ['Average weight must be 6 kg or less'],
+    })
+    assert.lengthOf(await Weighing.all(), 0)
+  })
+
+  test('still rejects one chick over 6 kg', async ({ client, assert }) => {
+    const user = await createUser()
+
+    const response = await client
+      .post('/weighings')
+      .header('referer', '/weighings/create')
+      .loginAs(user)
+      .withCsrfToken()
+      .form({ ...validForm, weightKg: '6.001' })
+      .redirects(0)
+
+    response.assertFlashMessage('inputErrorsBag', {
+      weightKg: ['Average weight must be 6 kg or less'],
+    })
+    assert.lengthOf(await Weighing.all(), 0)
+  })
+
+  test('rejects a total too small for the number of chicks (1000 chicks, 0.400 kg)', async ({
+    client,
+    assert,
+  }) => {
+    const user = await createUser()
+
+    const response = await client
+      .post('/weighings')
+      .header('referer', '/weighings/create')
+      .loginAs(user)
+      .withCsrfToken()
+      .form({ ...validForm, chickCount: 1000, weightKg: '0.400' })
+      .redirects(0)
+
+    response.assertFlashMessage('inputErrorsBag', {
+      weightKg: ['Total weight is too small for this number of chicks'],
+    })
+    assert.lengthOf(await Weighing.all(), 0)
+  })
+
+  test('updating a batch changes the average and the status', async ({ client, assert }) => {
+    const user = await createUser()
+    const weighing = await Weighing.create({
+      breed: 'ross',
+      ageDays: 21,
+      weightGrams: 949,
+      chickCount: 104,
+      totalGrams: 98700,
+      weighedOn: DateTime.fromISO('2026-10-31'),
+    })
+
+    await client
+      .put(`/weighings/${weighing.id}`)
+      .loginAs(user)
+      .withCsrfToken()
+      .form({ ...validForm, chickCount: 104, weightKg: '105.000' })
+      .redirects(0)
+
+    await weighing.refresh()
+    assert.equal(weighing.weightGrams, 1010)
+    assert.equal(weighing.totalGrams, 105000)
+    assert.equal(weighing.chickCount, 104)
+    const list = await client.get('/weighings').loginAs(user).withInertia()
+    assert.equal(list.inertiaProps.weighings[0].status, 'on_track')
+  })
+
   test('lists newest weighing first', async ({ client, assert }) => {
     const user = await createUser()
     const base = { breed: 'ross', ageDays: 21, weightGrams: 1000, totalGrams: 1000 }
