@@ -1,24 +1,14 @@
 <script setup lang="ts">
-import MarketingLayout from '~/layouts/marketing.vue'
+import { Head } from '@inertiajs/vue3'
+import { Link } from '@adonisjs/inertia/vue'
+import AuthLayout from '~/layouts/auth.vue'
 </script>
 
 <template>
-  <MarketingLayout>
-    <div class="home">
-      <article class="prose-card">
-        <div class="pc-top">
-          <span class="pc-status mono tag" :style="{ color: 'var(--subtle)' }">
-            <span class="dot" /> 404
-          </span>
-        </div>
-        <div class="pc-lead">
-          <span>Not found.</span>
-          <em>That route hasn't been built yet.</em>
-        </div>
-        <p class="pc-para">
-          The page you tried to reach doesn't exist. Check the URL or head back home.
-        </p>
-      </article>
-    </div>
-  </MarketingLayout>
+  <AuthLayout>
+    <Head title="Page not found" />
+    <h1 class="gate__title">Page not found</h1>
+    <p class="gate__sub">Check the address, or go back to your weighings.</p>
+    <Link route="weighings.index" class="btn btn--primary btn--big">Go to weighings</Link>
+  </AuthLayout>
 </template>

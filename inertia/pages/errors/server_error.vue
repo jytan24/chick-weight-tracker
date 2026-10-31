@@ -1,25 +1,14 @@
 <script setup lang="ts">
-import MarketingLayout from '~/layouts/marketing.vue'
+import { Head } from '@inertiajs/vue3'
+import { Link } from '@adonisjs/inertia/vue'
+import AuthLayout from '~/layouts/auth.vue'
 </script>
 
 <template>
-  <MarketingLayout>
-    <div class="home">
-      <article class="prose-card">
-        <div class="pc-top">
-          <span class="pc-status mono tag" :style="{ color: '#c0392b' }">
-            <span class="dot" /> 500
-          </span>
-        </div>
-        <div class="pc-lead">
-          <span>Something broke.</span>
-          <em>The server hit an unexpected error.</em>
-        </div>
-        <p class="pc-para">
-          Try again in a moment. If the problem persists, check the server logs for the underlying
-          exception.
-        </p>
-      </article>
-    </div>
-  </MarketingLayout>
+  <AuthLayout>
+    <Head title="Something went wrong" />
+    <h1 class="gate__title">Something went wrong</h1>
+    <p class="gate__sub">Nothing you entered was lost. Wait a moment, then try again.</p>
+    <Link route="weighings.index" class="btn btn--primary btn--big">Go to weighings</Link>
+  </AuthLayout>
 </template>

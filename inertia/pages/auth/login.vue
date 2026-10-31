@@ -1,27 +1,32 @@
 <script setup lang="ts">
-import AuthLayout from '~/layouts/auth.vue'
+import { Head } from '@inertiajs/vue3'
 import { Form } from '@adonisjs/inertia/vue'
+import AuthLayout from '~/layouts/auth.vue'
 </script>
 
 <template>
   <AuthLayout>
-    <h1 class="auth__title">JY Chick</h1>
-    <p class="auth__sub">Sign in to record and check chicken weights.</p>
+    <Head title="Log in" />
+    <h1 class="gate__title">JY Chick</h1>
+    <p class="gate__sub">
+      Log in to record chicken weights and see how far they are from the standard.
+    </p>
 
     <Form v-slot="{ processing, errors }" route="session.store">
-      <div class="auth__form">
+      <div class="form">
         <div class="field">
           <label class="field__label" for="email">Email</label>
           <input
             id="email"
             name="email"
             type="email"
-            class="field__input"
+            inputmode="email"
+            autocapitalize="none"
             autocomplete="username"
-            placeholder="you@example.com"
+            class="field__input"
             :aria-invalid="errors.email ? 'true' : 'false'"
           />
-          <span v-if="errors.email" class="field__error">{{ errors.email }}</span>
+          <p v-if="errors.email" class="q__error" role="alert">{{ errors.email }}</p>
         </div>
 
         <div class="field">
@@ -30,21 +35,15 @@ import { Form } from '@adonisjs/inertia/vue'
             id="password"
             name="password"
             type="password"
-            class="field__input"
             autocomplete="current-password"
-            placeholder="••••••••"
+            class="field__input"
             :aria-invalid="errors.password ? 'true' : 'false'"
           />
-          <span v-if="errors.password" class="field__error">{{ errors.password }}</span>
+          <p v-if="errors.password" class="q__error" role="alert">{{ errors.password }}</p>
         </div>
 
-        <button
-          type="submit"
-          class="btn btn--primary btn--block"
-          :disabled="processing"
-          :style="{ marginTop: '4px' }"
-        >
-          {{ processing ? 'One moment…' : 'Sign in' }}
+        <button type="submit" class="btn btn--primary btn--big" :disabled="processing">
+          {{ processing ? 'Logging in…' : 'Log in' }}
         </button>
       </div>
     </Form>

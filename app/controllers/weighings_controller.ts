@@ -1,5 +1,5 @@
 import Weighing from '#models/weighing'
-import { BREEDS, BREED_LABELS } from '#constants/standard_weights'
+import { BREEDS, BREED_LABELS, STANDARD_WEIGHTS_GRAMS } from '#constants/standard_weights'
 import WeighingTransformer from '#transformers/weighing_transformer'
 import { weighingValidator } from '#validators/weighing'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -20,6 +20,11 @@ function toColumns({ weightKg, ...data }: Awaited<ReturnType<typeof weighingVali
 const WEIGHINGS_PER_PAGE = 30
 
 const breedOptions = BREEDS.map((value) => ({ value, label: BREED_LABELS[value] }))
+
+// Plain copies, because Inertia props must be mutable arrays, not readonly ones
+const standardWeights: Record<string, number[]> = Object.fromEntries(
+  BREEDS.map((value) => [value, [...STANDARD_WEIGHTS_GRAMS[value]]])
+)
 
 export default class WeighingsController {
   async index({ inertia, request }: HttpContext) {
@@ -45,6 +50,7 @@ export default class WeighingsController {
     return inertia.render('weighings/create', {
       today: DateTime.now().toISODate()!,
       breeds: breedOptions,
+      standards: standardWeights,
     })
   }
 
@@ -54,6 +60,7 @@ export default class WeighingsController {
     return inertia.render('weighings/edit', {
       weighing: WeighingTransformer.transform(weighing),
       breeds: breedOptions,
+      standards: standardWeights,
     })
   }
 

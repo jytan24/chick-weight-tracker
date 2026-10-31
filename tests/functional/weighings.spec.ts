@@ -80,6 +80,21 @@ test.group('Weighings', (group) => {
     )
   })
 
+  test('sends the standard weights so the form can show them while typing', async ({
+    client,
+    assert,
+  }) => {
+    const user = await createUser()
+
+    const response = await client.get('/weighings/create').loginAs(user).withInertia()
+
+    const { standards } = response.inertiaProps
+    assert.lengthOf(standards.ross, 45)
+    assert.equal(standards.ross[21], 1012)
+    assert.equal(standards.cobb[35], 2521)
+    assert.equal(standards.aa_plus[14], 527)
+  })
+
   test('opens the edit form with the saved values', async ({ client, assert }) => {
     const user = await createUser()
     const weighing = await Weighing.create({

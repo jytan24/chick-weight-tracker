@@ -328,7 +328,7 @@ flowchart LR
 - [x] Phase 2: Gap and status maths
 - [x] Phase 3: Login
 - [x] Phase 4: Save, list, edit, delete weighings
-- [ ] Phase 5: Phone pages
+- [x] Phase 5: Phone pages (components: status_badge, gap_gauge, weighing_fields; layout: app; not yet seen on a real phone, see Verification)
 - [ ] Phase 6: Put it online
 
 ## Docs to write right after you approve (before any code)
